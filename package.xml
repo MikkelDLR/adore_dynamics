@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>adore_planning</name> <version>0.0.1</version>
+  <name>adore_dynamics</name> <version>0.0.1</version>
   <description>TODO: Package description</description>
   <maintainer email="opensource-ts@dlr.de">DLR-TS</maintainer>
   <license>TODO: License declaration</license>
