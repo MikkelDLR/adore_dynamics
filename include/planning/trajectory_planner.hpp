@@ -31,6 +31,7 @@
 #include "dynamics/trajectory.hpp"
 #include "multi_agent_solver/multi_agent_solver.hpp"
 #include "planning/speed_profiles.hpp"
+#include <nlohmann/json.hpp>
 
 namespace adore
 {
@@ -52,8 +53,10 @@ public:
                                             const dynamics::Trajectory&          initial_guess = dynamics::Trajectory() );
 
   void set_parameters( const std::map<std::string, double>& params );
+  void set_parameters_from_file(const std::string& file_path);
   void set_vehicle_parameters( const dynamics::PhysicalVehicleParameters& params );
-  void set_comfort_settings( const std::shared_ptr<dynamics::ComfortSettings>& settings );
+  void set_comfort_settings( const dynamics::ComfortSettings& settings );
+  dynamics::PhysicalVehicleParameters get_physical_vehicle_parameters(); 
 
 private:
 
@@ -86,7 +89,7 @@ private:
   dynamics::VehicleStateDynamic start_state; // Current state of the vehicle
 
   dynamics::PhysicalVehicleParameters        vehicle_params;
-  std::shared_ptr<dynamics::ComfortSettings> comfort_settings;
+  dynamics::ComfortSettings comfort_settings;
 
 
   void                   setup_problem();

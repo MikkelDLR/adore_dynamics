@@ -57,11 +57,39 @@ TrajectoryPlanner::set_parameters( const std::map<std::string, double>& params )
   }
 }
 
+void 
+TrajectoryPlanner::set_parameters_from_file(const std::string& file_path)
+{
+  std::ifstream ifs( file_path );
+  if( !ifs.is_open() )
+  {
+    throw std::runtime_error( "Could not open file: " + file_path );
+  }
+  nlohmann::json j;
+  ifs >> j;
+
+  dt = j.at( "dt" ).get<double>();
+  horizon_steps = j.at( "horizon_steps" ).get<size_t>();
+  weights.lane_error = j.at( "lane_error" ).get<double>();
+  weights.long_error = j.at( "long_error" ).get<double>();
+  weights.speed_error = j.at( "speed_error" ).get<double>();
+  weights.heading_error = j.at( "heading_error" ).get<double>();
+  weights.steering_angle = j.at( "steering_angle" ).get<double>();
+  weights.acceleration = j.at( "acceleration" ).get<double>();
+  solver_params.max_iterations = j.at( "max_iterations" ).get<double>();
+  solver_params.tolerance = j.at( "tolerance" ).get<double>();
+  solver_params.max_ms = j.at( "max_ms" ).get<double>();
+  solver_params.debug = j.at( "debug" ).get<double>();
+  ref_traj_length = j.at( "ref_traj_length" ).get<double>();
+
+  std::cerr << "LOADED TRAJECTORY PLANNER PARAMETERS " << file_path << std::endl;
+}
+
 void
-TrajectoryPlanner::set_comfort_settings( const std::shared_ptr<dynamics::ComfortSettings>& settings )
+TrajectoryPlanner::set_comfort_settings( const dynamics::ComfortSettings& settings )
 {
   comfort_settings = settings;
-  comfort_settings->clamp( vehicle_params );
+  comfort_settings.clamp( vehicle_params );
 }
 
 void
@@ -246,5 +274,11 @@ TrajectoryPlanner::setup_problem()
   problem->initialize_problem();
   problem->verify_problem();
 }
+
+dynamics::PhysicalVehicleParameters TrajectoryPlanner::get_physical_vehicle_parameters() 
+{
+  return vehicle_params;
+}
+
 } // namespace planner
 } // namespace adore
