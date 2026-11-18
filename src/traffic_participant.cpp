@@ -99,6 +99,10 @@ TrafficParticipantSet::update_traffic_participants( const TrafficParticipant& ne
   {
     participants[new_participant_data.id].route = new_participant_data.route.value();
   }
+  if( new_participant_data.maneuver_advice.has_value() )
+  {
+    participants[new_participant_data.id].maneuver_advice = new_participant_data.maneuver_advice.value();
+  }
 };
 
 void

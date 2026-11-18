@@ -5,9 +5,18 @@ namespace adore
 namespace dynamics
 {
 
-enum ManeuverAdvice
+enum ManeuverType
 {
-  FollowLane
+  FollowRoute = 0,
+  SlowDown = 1,
+  Stop = 2
+};
+
+struct ManeuverAdvice
+{
+  ManeuverType maneuver = FollowRoute;
+  double target_speed_mps = 0.0;
+  double distance_m = 0.0;
 };
 
 } // namespace dynamics
